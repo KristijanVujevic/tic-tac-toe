@@ -45,12 +45,18 @@ const App = () => {
     setXIsNext(!xIsNext);
 
     const winnerInfo = calculateWinner(newBoard);
+
     if (winnerInfo) {
+      // Handle the case when there is a winner
       winnerInfo.winner === "X" ? setXWins(xWins + 1) : setOWins(oWins + 1);
       setTimeout(() => {
         alert(`Player ${winnerInfo.winner} wins!`);
         resetGame(); // Reset the game state after a short delay
       }, 1000);
+    } else if (newBoard.every((square) => square !== null)) {
+      // Check for a draw after checking for a winner
+      alert("It's a draw!");
+      resetGame(); // Reset the game state
     }
   };
 
@@ -67,8 +73,11 @@ const App = () => {
     );
   };
 
-  const status = calculateWinner(board)
-    ? `Winner: ${calculateWinner(board).winner}`
+  const winnerInfo = calculateWinner(board);
+  const status = winnerInfo
+    ? `Winner: ${winnerInfo.winner}`
+    : board.every((square) => square !== null)
+    ? "It's a draw!"
     : `Next player: ${xIsNext ? "X" : "O"}`;
 
   return (
