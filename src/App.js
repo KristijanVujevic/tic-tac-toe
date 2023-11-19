@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { createContext, useState } from "react";
 import "./App.css";
 
+import Tema from "./Components/tema";
+export const Theme = createContext("light");
 const initialBoard = Array(9).fill(null);
 
 const calculateWinner = (squares) => {
@@ -28,6 +30,7 @@ const App = () => {
   const [xIsNext, setXIsNext] = useState(true);
   const [xWins, setXWins] = useState(0);
   const [oWins, setOWins] = useState(0);
+  const [theme, setTheme] = useState("dark");
 
   const resetGame = () => {
     setBoard(initialBoard);
@@ -81,30 +84,33 @@ const App = () => {
     : `Next player: ${xIsNext ? "X" : "O"}`;
 
   return (
-    <div className="App">
-      <h1>Tic-Tac-Toe</h1>
-      <div className="status">{status}</div>
-      <div className="board">
-        <div className="row">
-          {renderSquare(0)}
-          {renderSquare(1)}
-          {renderSquare(2)}
+    <div className={`${theme} App`}>
+      <Theme.Provider value={[theme, setTheme]}>
+        <h1>Tic-Tac-Toe</h1>
+        <div className="status">{status}</div>
+        <div className="board">
+          <div className="row">
+            {renderSquare(0)}
+            {renderSquare(1)}
+            {renderSquare(2)}
+          </div>
+          <div className="row">
+            {renderSquare(3)}
+            {renderSquare(4)}
+            {renderSquare(5)}
+          </div>
+          <div className="row">
+            {renderSquare(6)}
+            {renderSquare(7)}
+            {renderSquare(8)}
+          </div>
         </div>
-        <div className="row">
-          {renderSquare(3)}
-          {renderSquare(4)}
-          {renderSquare(5)}
+        <div className="scoreboard">
+          <p>Player X wins: {xWins}</p>
+          <p>Player O wins: {oWins}</p>
         </div>
-        <div className="row">
-          {renderSquare(6)}
-          {renderSquare(7)}
-          {renderSquare(8)}
-        </div>
-      </div>
-      <div className="scoreboard">
-        <p>Player X wins: {xWins}</p>
-        <p>Player O wins: {oWins}</p>
-      </div>
+        <Tema />
+      </Theme.Provider>
     </div>
   );
 };
